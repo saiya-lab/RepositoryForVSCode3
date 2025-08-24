@@ -13,3 +13,5 @@ def good():
 
 if __name__ == "___main__":
     app.run(debug=True)
+
+#切羽詰まってる
