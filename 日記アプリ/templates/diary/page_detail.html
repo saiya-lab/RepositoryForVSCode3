@@ -1,0 +1,15 @@
+{% extends "base/diary_base.html" %}
+{% block body %}
+
+
+<h2>{{ page.title }}</h2>
+<div>{{ page.page_date }}</div>
+<div>{{ page.body | linebreaksbr }}</div>
+{% if page.picture %}
+   <img src="{{ page.picture.url }}"/>
+{% endif %}
+<br>
+<a href="{% url 'diary:page_update' page.id %}" >編集</a>
+<a href="{% url 'diary:page_delete' page.id %}" >削除</a>
+
+{% endblock %}

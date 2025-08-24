@@ -1,0 +1,16 @@
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-size:  1.6rem;
+    background-color: #f5f4f4;
+}
+
+h2,#link-title {
+    color:turquoise;
+}
+
+.highlight {
+    color:aquamarine;
+}
