@@ -8,8 +8,7 @@
 #else:
     #print("Odd")
 
-a, b = map(int, input("値を入力してください:").split())
-print(f"あなたの入力:{a, b}")
+a, b = map(int, input().split())
 
 if a*b%2==0:
     print("Even")
