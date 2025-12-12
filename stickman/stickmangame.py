@@ -216,16 +216,28 @@ class StickFigureSprite(Sprite):
                left = False
                if sprite.endgame:
                    self.game.running = False
+                   show_game_clear(self)
            if right and self.x > 0 and collided_right(co, sprite_co):
                self.x = 0
                right = False
                if sprite.endgame:
                   self.game.running = False
+                  show_game_clear(self)
 
       if falling and bottom and self.y == 0\
       and co.y2 < self.game.canvas_height:
          self.y = 4
       self.game.canvas.move(self.image, self.x, self.y)
+
+#gameover
+def show_game_clear(self):
+    self.game.canvas.create_text(
+       self.game.canvas_width // 2,
+       self.game.canvas_height // 2,
+       text="GAME CLEAR",
+       font=("Helvetica", 32, "bold"),
+       fill="orange"
+    )
 
 
 
@@ -270,6 +282,8 @@ class DoorSprite(Sprite):
       self.image = game.canvas.create_image(x, y, image=self.photo_image, anchor='nw')
       self.coordinates = Coords(x, y, x + (width / 2), y + height)
       self.endgame = True
+
+
 
 g = Game()
 
