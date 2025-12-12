@@ -119,7 +119,9 @@ class StickFigureSprite(Sprite):
       self.last_time = time.time()
       self.coordinates = Coords()
       game.canvas.bind_all('<KeyPress-Left>', self.turn_left)
+      game.canvas.bind_all('<KeyRelease-Left>', self.stop)
       game.canvas.bind_all('<KeyPress-Right>', self.turn_right)
+      game.canvas.bind_all('<KeyRelease-Right>', self.stop)
       game.canvas.bind_all('<space>', self.jump)
 
   def turn_left(self, evt):
@@ -136,6 +138,10 @@ class StickFigureSprite(Sprite):
     if self.y == 0:
         self.y = -4
         self.jump_count = 0
+
+  def stop(self, evt):
+     self.x = 0
+  #keyRleaseで横移動をstop
 
   def animate(self):
      if self.x != 0 and self.y == 0:
@@ -231,9 +237,20 @@ class StickFigureSprite(Sprite):
 
 #gameover
 def show_game_clear(self):
+    x = self.game.canvas_width // 2
+    y = self.game.canvas_height // 2
+    #font_size = 60
+
+    for dx, dy in [(-3,0),(3,0),(0,-3),(0,3),(-3,-3),(3,-3),(-3,3),(3,3)]:
+        self.game.canvas.create_text(
+            x+dx, y+dy,
+            text="GAME CLEAR",
+            font=("Helvetica", 32, "bold"),
+            fill="black"
+       )
+    #本体の文字
     self.game.canvas.create_text(
-       self.game.canvas_width // 2,
-       self.game.canvas_height // 2,
+       x, y,
        text="GAME CLEAR",
        font=("Helvetica", 32, "bold"),
        fill="orange"
