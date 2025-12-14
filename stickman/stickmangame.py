@@ -7,7 +7,7 @@ os.chdir("C:/Users/81809/python/VSCodeGitHub/RepositoryForVSCode3/stickman")
 print("現在の実行場所:", os.getcwd())
 print("ファイル存在:", os.path.isfile('background.gif'))
 print("ファイル存在:", os.path.isfile('figure-enemy-sword-l1.gif'))
-
+print("door1.gif存在:", os.path.isfile('door1.gif'))
 
 
 class Coords:
@@ -235,13 +235,13 @@ class StickFigureSprite(Sprite):
                right = False
                if sprite.endgame:
                   self.game.running = False
-                  show_game_clear(self)
+                  show_game_clear(self.game)
 
            if collided_left(co, sprite_co) or collided_right(co, sprite_co)\
            or collided_top(co, sprite_co) or collided_bottom(self.y, co, sprite_co):
               if  isinstance(sprite, EnemySprite):
                  self.game.running = False
-                 show_game_over(self)
+                 show_game_over(self.game)
 
       if falling and bottom and self.y == 0\
       and co.y2 < self.game.canvas_height:
@@ -250,37 +250,52 @@ class StickFigureSprite(Sprite):
       self.game.canvas.move(self.image, self.x, self.y)
 
 #gameclear
-def show_game_clear(self):
-    x = self.game.canvas_width // 2
-    y = self.game.canvas_height // 2
+def show_game_clear(game):
+    x = game.canvas_width // 2
+    y = game.canvas_height // 2
     #font_size = 60
 
     for dx, dy in [(-3,0),(3,0),(0,-3),(0,3),(-3,-3),(3,-3),(-3,3),(3,3)]:
-        self.game.canvas.create_text(
+        game.canvas.create_text(
             x+dx, y+dy,
             text="GAME CLEAR",
             font=("Helvetica", 32, "bold"),
             fill="black"
        )
     #本体の文字
-    self.game.canvas.create_text(
+    game.canvas.create_text(
        x, y,
        text="GAME CLEAR",
        font=("Helvetica", 32, "bold"),
        fill="orange"
     )
-#gameover
-def show_game_over(self):
-   x = self.game.canvas_width // 2
-   y = self.game.canvas_height // 2
+    game.canvas.create_text(
+      x, y,
+      text='Press r to Restart',
+      font=('Helvetica', 20, 'bold'),
+      fill='white'
+    )
+    game.canvas.bind_all('<r>', lambda e: restart_game(game))
 
-   self.game.canvas.create_text(
+#gameover
+def show_game_over(game):
+   x = game.canvas_width // 2
+   y = game.canvas_height // 2
+
+   game.canvas.create_text(
       x, y,
       text='GAME OVER',
       font=('Helvetica', 32, 'bold'),
       fill='red'
    )
 
+   game.canvas.create_text(
+      x, y,
+      text='Press r to Restart',
+      font=('Helvetica', 20, 'bold'),
+      fill='white'
+   )
+   game.canvas.bind_all('<r>', lambda e: restart_game(game))
 
 
 
@@ -357,10 +372,29 @@ class EnemySprite(Sprite):
 
        return self.coordinates
 
+#リセットボタン
+def restart_game(game):
+   game.canvas.delete('all')
+   game.sprites = []
+
+   stickman = StickFigureSprite(game)
+   game.sprites.append(stickman)
+
+   enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'), 350, 450, 32, 32)
+   game.sprites.append(enemy)
+
+   door = DoorSprite(game, PhotoImage(file='door1.gif'), 100, 300, 32, 32)
+   game.sprites.append(door)
+
+   game.running = True
+
+
 
 
 
 g = Game()
+
+
 
 platform1 = PlatformSprite(g, PhotoImage(file='platform1.gif'), 0, 480, 100, 10)
 platform2 = PlatformSprite(g, PhotoImage(file='platform1.gif'), 150, 440, 100, 10)
@@ -389,7 +423,7 @@ sf = StickFigureSprite(g)
 g.sprites.append(sf)
 
 try:
-   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 45, 30, 32, 32)
+   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 100, 200, 32, 32)
    g.sprites.append(enemy)
 except Exception as e:
    print("EnemySprite 初期化エラー", e)
