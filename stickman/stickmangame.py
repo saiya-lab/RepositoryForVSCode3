@@ -389,11 +389,11 @@ sf = StickFigureSprite(g)
 g.sprites.append(sf)
 
 try:
-   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 100, 60, 32, 32)
+   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 45, 30, 32, 32)
    g.sprites.append(enemy)
 except Exception as e:
    print("EnemySprite 初期化エラー", e)
 
-
+#
 g.mainloop()
 #0,480,100,10は位置キャンバスの横0縦480ピクセルと画像の幅100、高さ10ピクセルを表している
