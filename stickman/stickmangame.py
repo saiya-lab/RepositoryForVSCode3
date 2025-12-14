@@ -6,6 +6,9 @@ import os
 os.chdir("C:/Users/81809/python/VSCodeGitHub/RepositoryForVSCode3/stickman")
 print("現在の実行場所:", os.getcwd())
 print("ファイル存在:", os.path.isfile('background.gif'))
+print("ファイル存在:", os.path.isfile('figure-enemy-sword-l1.gif'))
+
+
 
 class Coords:
   def __init__(self, x1=0, y1=0, x2=0, y2=0):
@@ -112,6 +115,7 @@ class StickFigureSprite(Sprite):
         ]
       self.image = game.canvas.create_image(200, 470,image=self.images_left[0], anchor='nw')
       self.x = -2
+      self.vx = 0 #横方向の加速度
       self.y = 0
       self.current_image = 0
       self.current_image_add = 1
@@ -128,11 +132,13 @@ class StickFigureSprite(Sprite):
     if self.y == 0:
         self.x = -2
         self.game.canvas.itemconfig(self.image, image=self.images_left[0])
+        self.vx = -3
 
   def turn_right(self, evt):
     if self.y == 0:
         self.x = 2
         self.game.canvas.itemconfig(self.image, image=self.images_right[0])
+        self.vx = -3
 
   def jump(self, evt):
     if self.y == 0:
@@ -141,6 +147,7 @@ class StickFigureSprite(Sprite):
 
   def stop(self, evt):
      self.x = 0
+     self.vx = 0
   #keyRleaseで横移動をstop
 
   def animate(self):
@@ -230,12 +237,19 @@ class StickFigureSprite(Sprite):
                   self.game.running = False
                   show_game_clear(self)
 
+           if collided_left(co, sprite_co) or collided_right(co, sprite_co)\
+           or collided_top(co, sprite_co) or collided_bottom(self.y, co, sprite_co):
+              if  isinstance(sprite, EnemySprite):
+                 self.game.running = False
+                 show_game_over(self)
+
       if falling and bottom and self.y == 0\
       and co.y2 < self.game.canvas_height:
          self.y = 4
+         self.x = self.vx
       self.game.canvas.move(self.image, self.x, self.y)
 
-#gameover
+#gameclear
 def show_game_clear(self):
     x = self.game.canvas_width // 2
     y = self.game.canvas_height // 2
@@ -255,6 +269,18 @@ def show_game_clear(self):
        font=("Helvetica", 32, "bold"),
        fill="orange"
     )
+#gameover
+def show_game_over(self):
+   x = self.game.canvas_width // 2
+   y = self.game.canvas_height // 2
+
+   self.game.canvas.create_text(
+      x, y,
+      text='GAME OVER',
+      font=('Helvetica', 32, 'bold'),
+      fill='red'
+   )
+
 
 
 
@@ -300,6 +326,38 @@ class DoorSprite(Sprite):
       self.coordinates = Coords(x, y, x + (width / 2), y + height)
       self.endgame = True
 
+#動く敵
+class EnemySprite(Sprite):
+   def __init__(self, game, photo_image, x, y, width, height):
+      Sprite.__init__(self, game)
+      self.photo_image = photo_image
+      self.image = game.canvas.create_image(x, y, image=self.photo_image , anchor='nw')
+      self.coordinates = Coords(x, y, x + width, y + height)
+
+      self.vx = 2
+    #移動範囲
+      self.min_x = x
+      self.max_x = x + 150
+
+   def move(self):
+      self.game.canvas.move(self.image, self.vx, 0)
+      co = self.coords()
+
+      if co.x1 <= self.min_x or co.x2 >= self.max_x:
+          self.vx = -self.vx
+
+   def coords(self):
+       xy = self.game.canvas.coords(self.image)
+       if not xy :
+          return self.coordinates
+       self.coordinates.x1 = xy[0]
+       self.coordinates.y1 = xy[1]
+       self.coordinates.x2 = xy[0] +32
+       self.coordinates.y2 = xy[1] +32
+
+       return self.coordinates
+
+
 
 
 g = Game()
@@ -329,6 +387,13 @@ door = DoorSprite(g, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
 g.sprites.append(door)
 sf = StickFigureSprite(g)
 g.sprites.append(sf)
+
+try:
+   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 100, 60, 32, 32)
+   g.sprites.append(enemy)
+except Exception as e:
+   print("EnemySprite 初期化エラー", e)
+
 
 g.mainloop()
 #0,480,100,10は位置キャンバスの横0縦480ピクセルと画像の幅100、高さ10ピクセルを表している
