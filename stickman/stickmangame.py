@@ -310,19 +310,21 @@ class Game:
       self.canvas.pack()
       self.tk.update()
 
+      self.bg = PhotoImage(file='background.gif')
+      self.draw_background()
+      self.sprites = []
+      self.running = True
+
       self.canvas_height = self.canvas.winfo_height()
       self.canvas_width = self.canvas.winfo_width()
 
-      self.bg = PhotoImage(file='background.gif')
+  def draw_background(self):
       w = self.bg.width()
       h = self.bg.height()
 
       for x in range(0, 5):
          for y in range(0, 5):
              self.canvas.create_image(x * w, y * h, image=self.bg, anchor='nw')
-
-      self.sprites = []
-      self.running = True
 
   def mainloop(self):
        while True:
@@ -375,6 +377,15 @@ class EnemySprite(Sprite):
 #リセットボタン
 def restart_game(game):
    game.canvas.delete('all')
+
+   w = game.bg.width()
+   h = game.bg.height()
+
+   for x in range(0, 5):
+      for y in range(0, 5):
+         game.canvas.create_image(x * w, y * h, image=game.bg, anchor='nw')
+
+
    game.sprites = []
 
    stickman = StickFigureSprite(game)
@@ -423,7 +434,7 @@ sf = StickFigureSprite(g)
 g.sprites.append(sf)
 
 try:
-   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 100, 200, 32, 32)
+   enemy = EnemySprite(g, PhotoImage(file='figure-enemy-sword-l1.gif'), 170, 30, 32, 32)
    g.sprites.append(enemy)
 except Exception as e:
    print("EnemySprite 初期化エラー", e)
