@@ -439,6 +439,6 @@ try:
 except Exception as e:
    print("EnemySprite 初期化エラー", e)
 
-#
+
 g.mainloop()
 #0,480,100,10は位置キャンバスの横0縦480ピクセルと画像の幅100、高さ10ピクセルを表している
