@@ -229,7 +229,7 @@ class StickFigureSprite(Sprite):
                left = False
                if sprite.endgame:
                    self.game.running = False
-                   show_game_clear(self)
+                   show_game_clear(self.game)
            if right and self.x > 0 and collided_right(co, sprite_co):
                self.x = 0
                right = False
@@ -251,8 +251,9 @@ class StickFigureSprite(Sprite):
 
 #gameclear
 def show_game_clear(game):
-    x = game.canvas_width // 2
-    y = game.canvas_height // 2
+    x = game.canvas.winfo_width() // 2
+    y = game.canvas.winfo_height() // 2
+    game.canvas.create_text(x, y, text="GAME CLEAR!", font=("Helvetica", 30), fill="red")
     #font_size = 60
 
     for dx, dy in [(-3,0),(3,0),(0,-3),(0,3),(-3,-3),(3,-3),(-3,3),(3,3)]:
@@ -326,6 +327,24 @@ class Game:
          for y in range(0, 5):
              self.canvas.create_image(x * w, y * h, image=self.bg, anchor='nw')
 
+  def create_platforms(self):
+     platform_img1 = PhotoImage(file='platform1.gif')
+     platform_img2 = PhotoImage(file='platform2.gif')
+     platform_img3 = PhotoImage(file='platform3.gif')
+
+     p1 = PlatformSprite(self, platform_img1, 0, 480, 100, 10)
+     p2 = PlatformSprite(self, platform_img1, 150, 440, 100, 10)
+     p3 = PlatformSprite(self, platform_img1, 300, 400, 100, 10)
+     p4 = PlatformSprite(self, platform_img1, 300, 160, 100, 10)
+     p5 = PlatformSprite(self, platform_img2, 175, 350, 66, 10)
+     p6 = PlatformSprite(self, platform_img2, 50, 300, 66, 10)
+     p7 = PlatformSprite(self, platform_img2, 170, 120, 66, 10)
+     p8 = PlatformSprite(self, platform_img2, 45, 60, 66, 10)
+     p9 = PlatformSprite(self, platform_img3, 170, 250, 32, 10)
+     p10 = PlatformSprite(self, platform_img3, 230, 200, 32, 10)
+
+     self.sprites.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10])
+
   def mainloop(self):
        while True:
           if self.running == True:
@@ -374,6 +393,7 @@ class EnemySprite(Sprite):
 
        return self.coordinates
 
+
 #リセットボタン
 def restart_game(game):
    game.canvas.delete('all')
@@ -387,6 +407,7 @@ def restart_game(game):
 
 
    game.sprites = []
+   game.create_platforms()
 
    stickman = StickFigureSprite(game)
    game.sprites.append(stickman)
@@ -394,12 +415,12 @@ def restart_game(game):
    enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'), 350, 450, 32, 32)
    game.sprites.append(enemy)
 
-   door = DoorSprite(game, PhotoImage(file='door1.gif'), 100, 300, 32, 32)
+   door = DoorSprite(game, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
    game.sprites.append(door)
 
    game.running = True
 
-
+#append一つ追加 extend複数ついか
 
 
 
