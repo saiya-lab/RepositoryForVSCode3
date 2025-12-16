@@ -125,7 +125,7 @@ except Exception as e:
 paddle = Paddle(canvas, "blue")
 ball = Ball(canvas, paddle, "red")
 
-# --- ゲームの状態管理 ---
+# ゲームの状態管理 
 GAME_STATE = "waiting_to_start"
 DELAY_DURATION = 3
 
@@ -137,7 +137,7 @@ game_over_text_id = None
 
 
 def start_delay(evt):
-    """SPACEキーが押されたら遅延を開始。"""
+    "SPACEキーが押されたら遅延を開始。"
     global GAME_STATE, delay_text_id, intro_text_id
     if GAME_STATE == "waiting_to_start" or GAME_STATE == "game_over":
         GAME_STATE = "delaying"
@@ -158,7 +158,7 @@ def start_delay(evt):
 
 
 def countdown(second_left):
-    """指定された秒数でカウントダウンを行い、終了後にゲームを開始。"""
+#"指定された秒数でカウントダウンを行い、終了後にゲームを開始。"
     global GAME_STATE, delay_text_id
 
     if second_left > 0:
@@ -173,7 +173,7 @@ def countdown(second_left):
 
 
 def update_game():
-    """ゲームの動きを定期的に更新するメインループ。"""
+    "ゲームの動きを定期的に更新するメインループ。"
     global GAME_STATE, game_over_text_id, sound_game_over
 
     if GAME_STATE == "playing":

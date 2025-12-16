@@ -251,9 +251,9 @@ class StickFigureSprite(Sprite):
 
 #gameclear
 def show_game_clear(game):
+    game.is_game_clear = True
     x = game.canvas.winfo_width() // 2
     y = game.canvas.winfo_height() // 2
-    game.canvas.create_text(x, y, text="GAME CLEAR!", font=("Helvetica", 30), fill="red")
     #font_size = 60
 
     for dx, dy in [(-3,0),(3,0),(0,-3),(0,3),(-3,-3),(3,-3),(-3,3),(3,3)]:
@@ -271,7 +271,7 @@ def show_game_clear(game):
        fill="orange"
     )
     game.canvas.create_text(
-      x, y,
+      x, y + 30,
       text='Press r to Restart',
       font=('Helvetica', 20, 'bold'),
       fill='white'
@@ -280,6 +280,11 @@ def show_game_clear(game):
 
 #gameover
 def show_game_over(game):
+   if game.is_game_clear:
+      return
+
+   game.is_game_over = True
+
    x = game.canvas_width // 2
    y = game.canvas_height // 2
 
@@ -291,7 +296,7 @@ def show_game_over(game):
    )
 
    game.canvas.create_text(
-      x, y,
+      x, y + 30 ,
       text='Press r to Restart',
       font=('Helvetica', 20, 'bold'),
       fill='white'
@@ -315,6 +320,8 @@ class Game:
       self.draw_background()
       self.sprites = []
       self.running = True
+      self.is_game_over = False
+      self.is_game_clear = False
 
       self.canvas_height = self.canvas.winfo_height()
       self.canvas_width = self.canvas.winfo_width()
@@ -370,7 +377,7 @@ class EnemySprite(Sprite):
       self.image = game.canvas.create_image(x, y, image=self.photo_image , anchor='nw')
       self.coordinates = Coords(x, y, x + width, y + height)
 
-      self.vx = 2
+      self.vx = 1
     #移動範囲
       self.min_x = x
       self.max_x = x + 150
@@ -396,29 +403,30 @@ class EnemySprite(Sprite):
 
 #リセットボタン
 def restart_game(game):
-   game.canvas.delete('all')
+  game.canvas.delete('all')
+  game.is_game_clear = False
+  game.is_game_over = False
+  w = game.bg.width()
+  h = game.bg.height()
 
-   w = game.bg.width()
-   h = game.bg.height()
-
-   for x in range(0, 5):
-      for y in range(0, 5):
-         game.canvas.create_image(x * w, y * h, image=game.bg, anchor='nw')
+  for x in range(0, 5):
+    for y in range(0, 5):
+        game.canvas.create_image(x * w, y * h, image=game.bg, anchor='nw')
 
 
-   game.sprites = []
-   game.create_platforms()
+  game.sprites = []
+  game.create_platforms()
 
-   stickman = StickFigureSprite(game)
-   game.sprites.append(stickman)
+  stickman = StickFigureSprite(game)
+  game.sprites.append(stickman)
 
-   enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'), 350, 450, 32, 32)
-   game.sprites.append(enemy)
+  enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'),170, 30, 32, 32)
+  game.sprites.append(enemy)
 
-   door = DoorSprite(game, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
-   game.sprites.append(door)
+  door = DoorSprite(game, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
+  game.sprites.append(door)
 
-   game.running = True
+  game.running = True
 
 #append一つ追加 extend複数ついか
 
