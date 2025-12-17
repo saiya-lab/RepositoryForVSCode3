@@ -278,6 +278,19 @@ def show_game_clear(game):
     )
     game.canvas.bind_all('<r>', lambda e: restart_game(game))
 
+    game.canvas.create_text(
+      x, y + 50,
+      text='Press n for Next Stage',
+      font=('Helvetica', 20, 'bold'),
+      fill='black'
+    )
+    game.canvas.bind_all('<n>', lambda e: restart_game(game))
+
+def next_stage(game):
+   game.stage += 1
+   setup_stage(game, game.stage)
+   game.is_game_clear = False
+
 #gameover
 def show_game_over(game):
    if game.is_game_clear:
@@ -304,7 +317,6 @@ def show_game_over(game):
    game.canvas.bind_all('<r>', lambda e: restart_game(game))
 
 
-
 #ゲームループ
 class Game:
   def __init__(self):
@@ -325,6 +337,7 @@ class Game:
 
       self.canvas_height = self.canvas.winfo_height()
       self.canvas_width = self.canvas.winfo_width()
+      self.stage = 1
 
   def draw_background(self):
       w = self.bg.width()
@@ -413,7 +426,6 @@ def restart_game(game):
     for y in range(0, 5):
         game.canvas.create_image(x * w, y * h, image=game.bg, anchor='nw')
 
-
   game.sprites = []
   game.create_platforms()
 
@@ -428,6 +440,26 @@ def restart_game(game):
 
   game.running = True
 
+def setup_stage(game, stage_number):
+  game.canvas.delete('all')
+  game.draw_background()
+  game.sprites = []
+  game.create_platforms()
+
+  stickman = StickFigureSprite(game)
+  game.sprites.append(stickman)
+
+  if stage_number == 1:
+    enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'),170, 30, 32, 32)
+    door = DoorSprite(game, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
+  elif stage_number == 2:
+    enemy = EnemySprite(game, PhotoImage(file='figure-enemy-sword-l1.gif'),170, 30, 32, 32)
+    door = DoorSprite(game, PhotoImage(file='door1.gif'), 45, 30, 40, 35)
+
+
+    game.sprites.append(door)
+    game.sprites.append(enemy)
+    game.running = True
 #append一つ追加 extend複数ついか
 
 
