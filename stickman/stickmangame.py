@@ -445,7 +445,6 @@ def setup_stage(game, stage_number):
   game.draw_background()
   game.sprites = []
   game.create_platforms()
-
   stickman = StickFigureSprite(game)
   game.sprites.append(stickman)
 
@@ -465,6 +464,7 @@ def setup_stage(game, stage_number):
 
 
 g = Game()
+
 
 
 
