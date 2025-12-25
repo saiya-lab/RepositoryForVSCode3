@@ -75,3 +75,74 @@ for (let index = 0; index < questions.length; index++) {
 console.log(questions[index]);
 }
 //console.log(questions[index])は配列questionsのindex番目の値をconsoleで表示するという意味
+
+//条件文
+//if(condition){
+    //ここに処理を書く
+//}
+// if(!isLogin) !論理否定
+let isLogin = true;
+if(!isLogin ){
+    alert("ログインしてください")
+}else{
+    console.log("ログイン成功中");
+}
+//if(isLogin === true)とif(islogin)は同じ意味になる
+// === 等しい
+// !== 等しくない
+// &&　かつ
+// if(foo2 > 0 && foo2 < 1000){
+
+// }
+// const userType = "menber"; //menber, admin, owner
+// if(userType === "menber"){
+//     //alert("アクセスできません");
+// }else if(userType === "admin"){
+//     alert("今から10分間だけアクセスできます");
+// }else {
+//     console.log("アクセス成功");
+// }
+
+//ex;mymoney500以上ならisShippingでtrueを返すようにしなさい
+const myMoney = 1000;
+let isShipping = false;
+if(myMoney >= 500){
+
+}
+console.log(!isShipping);
+//回答
+//const myMoney = 1000;
+//let isShipping = false;
+//if(myMoney >= 500){
+//  isShipping = true;
+//}
+//  console.log(isShipping);
+
+//関数
+// function 関数名(引数){
+    //処理
+// }
+
+// const 関数名 =() =>{
+    //処理
+// }
+
+//元のコード
+// if (new Date().getHours() > 20){
+//     document.body.style.backgroundColor = "#000";
+// }
+
+//関数化したコード
+function changeDarkMode(time) {
+    if (new Date().getHours() > time) {
+        document.body.style.backgroundColor = color;
+    }
+}
+
+if (season === "winter"){
+    changeDarkMode(18);
+}  else  {
+    changeDarkMode(20);
+}
+//changeDarkMode();
+//関数化すれば↑でよびだせる関数+()
