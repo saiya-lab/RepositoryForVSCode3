@@ -211,8 +211,50 @@ function getSeason(){
 const season = getSeason();
 console.log(season);
 
-//ex;実行したら戻り値20を返す関数"sonicboomを作成しなさい。
+//Q.実行したら戻り値20を返す関数"sonicboomを作成しなさい。
 const sonicBoom = () => {
     return 20;
 }
 console.log(sonicBoom());
+
+//アロー関数...javasprictの関数を短くシンプルにかける方法
+//Q.引数 lastDamage を持ち、実行したらlastDamageに1.5をかけた値を
+//戻り値として返す関数metalBurstを返しなさい
+const metalBurst = (lastDamage) => {
+    return lastDamage * 1.5;
+}
+console.log(metalBurst(50));
+// function metalBurst (lastDamage) {
+//     return lastDamage * 1.5;
+// }
+
+//Q.引数theirHpを持ち、実行したらtheirHpの値をそのまま戻り値として返す関数hornDrillを作成しなさい
+//ただし成功確率は30％とし、失敗した場合は0を返すようにしなさい
+const hornDrill = (theirHp) => {
+    if (Math.random() <= 0.3){
+        return theirHp;
+    }else {
+        return 0
+    }
+}
+
+console.log(hornDrill(100));
+
+//オブジェクト
+// const オブジェクト名 ={
+//     プロパティ名:値
+// };
+//let でもいいが constを使って定義することが多い
+const snsUser ={
+    id: 1,
+    userName: "Taro",
+    gender: "male",
+    like: function(){
+
+    },
+    post: function (contents) {
+        return contents + "を投稿しました。by" + this.userName;
+    },
+}
+
+console.log(snsUser.post("プログラミングなう"));
