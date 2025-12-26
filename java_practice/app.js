@@ -139,10 +139,80 @@ function changeDarkMode(time) {
     }
 }
 
-if (season === "winter"){
-    changeDarkMode(18);
-}  else  {
-    changeDarkMode(20);
-}
+// if (season === "winter"){
+//     changeDarkMode(18);
+// }  else  {
+//     changeDarkMode(20);
+// }
 //changeDarkMode();
 //関数化すれば↑でよびだせる関数+()
+
+function changeDarkMode(time, color) {
+    if (new Date().getHours() > time){
+        document.body.style.backgroundColor = color;
+    }
+}
+
+changeDarkMode(20, "#333");
+
+function changeDarkMode(time = 20, color = "#333") {
+    if (new Date().getHours() > time){
+        document.body.style.backgroundColor = color;
+    }
+}
+
+changeDarkMode();//time=20とcolor=#333のデフォルト値が適用される。
+//引数はオブジェクト形式でも渡すことができる。
+
+// function changeDarkMode(obj) {
+//     if (new Date().getHours() > obj.time){
+//         document.body.style.backgroundColor = obj.color;
+//     }
+// }
+
+// changeDarkMode({
+//     time: 20,
+//     color: "#333"
+// })
+//objを使うと引数の順番を気にする必要がなくなり、可読性がよくなる。
+
+//callback関数
+function foo3(callback){
+    console.log("Hi, Tom!");
+    callback();
+}
+
+function bar2(){
+    console.log("Hi, Ken!");
+}
+
+foo3(bar2);
+//関数foo()の引数に関数barを渡している。関数barはcallback()の時点で実行される。
+
+//戻り値
+// function 関数名(){
+//     //処理
+//     return 戻り値;
+// }
+
+function getSeason(){
+    const month = new Date().getMonth() + 1;
+    if (month >= 3 && month <= 5) {
+        return "spring";
+    } else if (month >= 6 && month <= 8) {
+        return "summer";
+    } else if (month >= 9 && month <= 11) {
+        return "autumn";
+    } else {
+        return "winter";
+    }
+}
+
+const season = getSeason();
+console.log(season);
+
+//ex;実行したら戻り値20を返す関数"sonicboomを作成しなさい。
+const sonicBoom = () => {
+    return 20;
+}
+console.log(sonicBoom());
