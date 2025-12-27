@@ -258,3 +258,84 @@ const snsUser ={
 }
 
 console.log(snsUser.post("プログラミングなう"));
+//thisは利用シーンで参照するものが変わる、オブジェクト内で使えばオブジェクト自体を参照する。
+//メソッドを定義する際はアロー関数ではなくfunctionで定義した関数を使う。
+
+//Q.ピカチュウのオブジェクトをつくりなさい。含めるべきプロパティ↓
+//name(文字列 -> "ピカチュウ")
+//level(数字 -> 18)
+//type(文字列の配列 -> 電気)
+//skills(文字列の配列 -> 10万ボルト、でんこうせっか、たいあたり)
+
+const pikachu = {
+    name:"ピカチュウ",
+    level: 18,
+    types:["電気"],
+    skills:["10万ボルト", "でんこうせっか", "たいあたり"],
+    levelUp: function(){
+        this.level++;
+        if(this.level >= 20){
+            this.skills.push("スパーク")
+        }
+    }
+
+};
+console.log(pikachu.skills);
+console.log(pikachu.level);
+pikachu.levelUp();
+pikachu.levelUp();
+console.log(pikachu.level);
+console.log(pikachu.skills);
+
+//標準組み込み関数標準組み込みオブジェクト
+console.log(parseInt("2"));
+
+
+const myPokemons = ["サンダー", "ホウオウ", "スイクン", "ラティアス", "パルキア"];
+myPokemons.push("ミュウツー");
+console.log(myPokemons.length);
+
+const oldVersions =["赤", "緑", "青"];
+const newVersions =["ルビー", "サファイア", "エメラルド"];
+
+console.log(oldVersions.concat(newVersions));
+//concatを使うと2つの配列を一つにまとめることができる
+
+//ブラウザAPI jsを実行しwebページを操作できる。
+// const timer = setTimeout(function(){
+//     alert("Hello!")
+// }, 5000);
+// clearTimeout(timer);
+//定数は大文字に
+//true falseの変数はis◌◌
+//二つ以上の英単語をつなげるばあい大文字にするpokemonName
+//pythonだとpokemon_name
+
+const $post = document.createElement("article");
+$post.setAttribute("class", "post");
+$post.innerText = "おなか減ったなう";
+
+const $timeline = document.querySelectorAll(".timeline")[0];
+$timeline.appendChild($post);
+
+//イベント
+//scroll resize 
+//mouthover touchmove
+window.addEventListener("load", function(){
+    alert("読み込みかんりょう");
+});
+// document.querySelector("#button").addEventListener("click", function(){
+//     console.log("clickされた");
+// });
+// document.querySelector("#button")
+// .addEventListener("click",function(){
+//     document.querySelector("#output")
+//     .textContent = "ピカチュウ";
+// });
+document.querySelector("#button").addEventListener("click", function(){
+    if(Math.random() <= 0.2){
+        alert("ピカチュウをゲットした！");
+    }else{
+        alert("ざんねん！もうすこしでつかまえられたのに！");
+    }
+});
